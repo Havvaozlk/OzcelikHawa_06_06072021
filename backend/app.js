@@ -1,11 +1,13 @@
 //importation d'express
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const path = require('path');
 const app = express();
+// app.use(express.json());
 
 require('dotenv').config();
 
@@ -22,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI,
     next();
   });
 
+
 app.use((req, res, next) => {
     console.log('Requête reçue !');
     next();
@@ -32,14 +35,18 @@ app.use((req, res, next) => {
     next();
   });
   
-  app.use((req, res, next) => {
-    res.json({ message: 'Votre requête a bien été reçue !' });
-    next();
-  });
+//   app.use((req, res, next) => {
+//     res.json({ message: 'Votre requête a bien été reçue !' });
+//     next();
+//   });
   
-  app.use((req, res, next) => {
-    console.log('Réponse envoyée avec succès !');
-  });
+//   app.use((req, res, next) => {
+//     console.log('Réponse envoyée avec succès !');
+//   });
+
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: false }));
   
   app.use('/images', express.static(path.join(__dirname, 'images')));
   app.use('/api/sauces', saucesRoutes);
