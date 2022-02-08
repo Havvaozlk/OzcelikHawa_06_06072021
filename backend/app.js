@@ -1,5 +1,6 @@
 //importation d'express
 const express = require('express');
+const helmet = require("helmet");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 // });
 
 app.use(bodyParser.json());
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
