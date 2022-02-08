@@ -2,29 +2,6 @@
 const Sauce = require('../models/sauce');
 const fs = require('fs');
 
-// exports.createSauce = (req, res, next) => {
-//   const sauce = new Sauce({
-//     title: req.body.title,
-//     description: req.body.description,
-//     imageUrl: req.body.imageUrl,
-//     price: req.body.price,
-//     userId: req.body.userId
-//   });
-//   sauce.save().then(
-//     () => {
-//       res.status(201).json({
-//         message: 'Post saved successfully!'
-//       });
-//     }
-//   ).catch(
-//     (error) => {
-//       res.status(400).json({
-//         error: error
-//       });
-//     }
-//   );
-// };
-
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;

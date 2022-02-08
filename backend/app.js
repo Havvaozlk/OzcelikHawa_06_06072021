@@ -1,8 +1,10 @@
 //importation d'express
+
 const express = require('express');
 const helmet = require("helmet");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const  mongoSanitize  =  require ( 'express-mongo-sanitize' ) ;
 const path = require('path');
 
 require('dotenv').config();
@@ -47,9 +49,11 @@ app.use((req, res, next) => {
 // });
 
 app.use(bodyParser.json());
+app.use(mongoSanitize());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
