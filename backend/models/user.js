@@ -1,6 +1,9 @@
+//importation de mongoose
 const mongoose = require('mongoose');
+//importation du pluggin pour que l'adresse main soit unique
 const uniqueValidator = require('mongoose-unique-validator');
 
+//création du schema de donnée liée a l'utilisateur
 const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
@@ -8,4 +11,5 @@ const userSchema = mongoose.Schema({
 
 userSchema.plugin(uniqueValidator);
 
+//Exportation du schema sous forme de modèle
 module.exports = mongoose.model('User', userSchema);
