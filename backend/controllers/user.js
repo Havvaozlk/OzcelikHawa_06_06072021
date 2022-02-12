@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 //on importe notre modele user
 const User = require('../models/user');
 //on installe et importe le package pour créer et vérifier les tokens d'authentification
+//qui permettent aux utilisateurs de ne se connecter qu'une seule fois à leur compte 
 const jwt = require('jsonwebtoken');
 
 //fonction signup pour l'enregistrement des utilisateurs
@@ -43,10 +44,13 @@ exports.signup = (req, res, next) => {
             //si elle est valable on envoie un objet json avec le userId et token
             res.status(200).json({
                 userId: user._id,
-                //on appel la fonction sign de jwt
+                //on appel la fonction sign de jwt pour encoder un nouveau token
                 token: jwt.sign(
+                  //on y ajoute l'id de l'utilisateur
                   { userId: user._id },
+                  //on ajoute une chaine secrète de développement temporaire
                   'RANDOM_TOKEN_SECRET',
+                  //nous définissons ensuite la fin de validité du token à 24H
                   { expiresIn: '24h' }
                 )
               });

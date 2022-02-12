@@ -1,11 +1,15 @@
-
+// Le fichier controleur exporte des méthodes qui sont ensuite attribuées aux routes
 const Sauce = require('../models/sauce');
 const fs = require('fs');
 
+//Création d'une nouvelle sauce
 exports.createSauce = (req, res, next) => {
+  //
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
+  //on crér une instance du modèle sauce
   const sauce = new Sauce({
+    //on récupère les champs qu'il y a dans le corps de la requête
     ...sauceObject,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     likes: 0,
@@ -13,18 +17,23 @@ exports.createSauce = (req, res, next) => {
     usersLiked: [],
     usersDisliked: []
   });
+  //on enregistre la sauce dans la base de donnée
   sauce.save()
     .then(() => res.status(201).json({ message: 'Sauce enregistrée !' }))
     .catch(error => res.status(400).json({ error }));
 };
 
+//afficher une sauce
 exports.getOneSauce = (req, res, next) => {
+  //on utilise findOne pour trouver la sauce ayant le meme id que le parametre de la requete
   Sauce.findOne({
     _id: req.params.id
   }).then(
+    //la sauce est retournée dans une promesse et est envoyé au frontend
     (sauce => {
       res.status(200).json(sauce);
     })
+    //si aucune sauce n'est trouvé ou si une erreur se produit nous envoyons une erreur 404 au frontend
   ).catch(
     (error) => {
       res.status(404).json({
@@ -34,17 +43,20 @@ exports.getOneSauce = (req, res, next) => {
   );
 };
 
+// modofier une sauce
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file ?
     {
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
+    //on utilise la methode uptadeOne pour mettre à jour la sauce qui correspond à l'objet que nous passons comme premier argument
   Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
     .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
     .catch(error => res.status(400).json({ error }));
 };
 
+//supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -58,8 +70,11 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+//afficher toute les sauces
 exports.getAllSauce = (req, res, next) => {
-  Sauce.find().then(
+  //nous utilisons la méthode find afin de renvoyer un tableau avec toutes les sauces
+  Sauce.find()
+  .then(
     (sauces) => {
       res.status(200).json(sauces);
     }

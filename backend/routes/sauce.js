@@ -1,5 +1,6 @@
+//on importe express
 const express = require('express');
-
+// express router permet de créer des routeurs séparés pour chaque route principale 
 const router = express.Router();
 
 const auth = require('../middleware/auth');
