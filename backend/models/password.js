@@ -12,13 +12,3 @@ schema
 .is().not().oneOf(['Passw0rd', 'Password123']); //ne doit pas etre égale à
 
 module.exports = schema;
-// module.exports = (req, res, next) => {
-//     const pass = req.body.password;
-
-//     if(schema.validate(pass)) {
-//         next();
-//     }
-//     else {
-//         return res.status(400).json({ message : 'Mot de passe trop faible.\n Veuillez saisir: 1 majuscule, 1 minuscule, 2 chiffres, 6 caractères minimum' })
-//     }
-// }
