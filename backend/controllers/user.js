@@ -6,6 +6,7 @@ const User = require('../models/user');
 //qui permettent aux utilisateurs de ne se connecter qu'une seule fois à leur compte 
 const jwt = require('jsonwebtoken');
 
+
 //fonction signup pour l'enregistrement des utilisateurs
 exports.signup = (req, res, next) => {
   //on hash le mot de passe avec bcrypt, on lui passe le mot de passe et le nombre de tour que l'algorithme va faire
